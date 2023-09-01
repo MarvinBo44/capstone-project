@@ -14,58 +14,48 @@ export default function AddShelf() {
     const [columnAmount, setColumnAmount] = useState<number>(0)
 
 
-    function postShelf() {
-        const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-        const reihen = rowAmount;
-        const spalten = columnAmount;
-        const actualCompartmentID: string[] = [];
+    async function postShelf() {
+        try {
+            const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            const reihen = rowAmount;
+            const spalten = columnAmount;
+            const actualCompartmentID: string[] = [];
+            const shelfID = uuid();
 
-        const shelfID = uuid();
-        axios({
-            method: 'post',
-            url: '/api/shelf',
-            data: {
-                _id: shelfID,
-                name: shelfName,
-                location: shelfLocation,
-                compartmentIds: []
-            }
-        }).then(() => {
+            const compartmentPromises = [];
+
             for (let i = 0; i < reihen; i++) {
-
-                // A1, A2, A3, B1, B2, B3
-                const compartmentChar: string = alphabet[i]
-                let compartmentNumber: number = 1;
+                const compartmentChar = alphabet[i];
+                let compartmentNumber = 1;
 
                 for (let j = 0; j < spalten; j++) {
-                    const compartmentID: string = uuid();
-                    axios({
-                        method: 'post',
-                        url: '/api/compartment',
-                        data: {
-                            _id: compartmentID,
-                            name: compartmentChar + compartmentNumber,
-                            items: []
-                        }
+                    const compartmentID = uuid();
+
+                    const compartmentPromise = axios.post('/api/compartment', {
+                        _id: compartmentID,
+                        name: compartmentChar + compartmentNumber,
+                        items: []
                     }).then(() => {
-                        actualCompartmentID.push(compartmentID)
-                    })
+                        actualCompartmentID.push(compartmentID);
+                    });
+                    compartmentPromises.push(compartmentPromise);
                     compartmentNumber++;
                 }
             }
-        }).then(() => {
-            axios({
-                method: 'post',
-                url: '/api/shelf',
-                data: {
-                    _id: shelfID,
-                    name: shelfName,
-                    location: shelfLocation,
-                    compartmentIds: actualCompartmentID
-                }
-            })
-        })
+
+            await Promise.all(compartmentPromises);
+
+            await axios.post('/api/shelf', {
+                _id: shelfID,
+                name: shelfName,
+                location: shelfLocation,
+                compartmentIds: actualCompartmentID
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
+
 
     return (
         <>
