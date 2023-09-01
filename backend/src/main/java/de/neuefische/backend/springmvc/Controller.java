@@ -15,7 +15,7 @@ public class Controller {
 
     //Shelf CRUD
     @PostMapping("/shelf")
-    public Shelf addItem(@RequestBody Shelf shelf){
+    public Shelf addShelf(@RequestBody Shelf shelf){
         return service.addShelf(shelf);
     }
 
@@ -26,7 +26,7 @@ public class Controller {
 
     // Compartment CRUD
     @PostMapping("/compartment")
-    public Compartment addItem(@RequestBody Compartment compartment){
+    public Compartment addCompartment(@RequestBody Compartment compartment){
         return service.addCompartment(compartment);
     }
 
@@ -34,4 +34,6 @@ public class Controller {
     public List<Compartment> getAllCompartments(){
         return service.getCompartmentRepo().findAll();
     }
+
+    // add compartmentsIDs to a shelf
 }

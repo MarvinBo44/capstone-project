@@ -1,11 +1,11 @@
-import { Button } from '@mui/material'
 import './App.css'
+import AddShelf from './addShelf'
 
 function App() {
 
   return (
     <>
-      <Button>Button</Button>
+      <AddShelf></AddShelf>
     </>
   )
 }

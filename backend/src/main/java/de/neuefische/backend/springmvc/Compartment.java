@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Compartment {
-    private String id;
+    private String _id;
     private String name;
     private List<Item> items;
 }

@@ -9,5 +9,6 @@ import java.util.List;
 public class Shelf {
     private String _id;
     private String name;
+    private String location;
     private List<String> compartmentIds;
 }
