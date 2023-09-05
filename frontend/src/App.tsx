@@ -1,11 +1,11 @@
 import './App.css'
-import AddShelf from './addShelf'
+import AddShelfModular from './addShelfModular.tsx'
 
 function App() {
 
   return (
     <>
-      <AddShelf></AddShelf>
+      <AddShelfModular></AddShelfModular>
     </>
   )
 }
