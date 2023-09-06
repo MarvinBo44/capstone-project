@@ -49,7 +49,7 @@ export default function AddShelfModular() {
             setRowAmountError(false);
         }
 
-        if (columnAmount === 0 || rowAmount > 26) {
+        if (columnAmount === 0 || columnAmount > 26) {
             setColumnAmountError(true);
             hasError = true;
         } else {
