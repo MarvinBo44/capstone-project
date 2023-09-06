@@ -84,7 +84,7 @@ jobs:
     needs: push-to-docker-hub
     steps:
       - name: Restart docker container
-        uses: marvmarv44/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
           host: capstone-project.de
           #Set App Name (replace "example" with your ssh user name)
@@ -98,7 +98,7 @@ jobs:
             sudo docker rm bo-java-23-2-marvin
             sudo docker run --pull=always --name bo-java-23-2-marvin --network capstones --ip 10.0.7.6 --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} marvmarv44/capstoneproject:latest
             sleep 15s
-            sudo docker logs bo-java-23-2-pokemon
+            sudo docker logs bo-java-23-2-marvin
 
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
