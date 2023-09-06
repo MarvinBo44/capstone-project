@@ -9,10 +9,6 @@ import '@fontsource/roboto/700.css';
 import {FormEvent, useState} from "react";
 import uuid from 'react-uuid';
 
-
-
-
-
 export default function AddShelfModular() {
     const [shelfName, setShelfName] = useState<string>("")
     const [shelfLocation, setShelfLocation] = useState<string>("")
@@ -61,7 +57,6 @@ export default function AddShelfModular() {
             resetAllInputFields();
         }
     }
-
 
     async function postShelf() {
         try {
@@ -182,6 +177,3 @@ export default function AddShelfModular() {
         </>
     )
 }
-
-// zahlen bis 26 einschränken
-// import roboto font,
