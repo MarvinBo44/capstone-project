@@ -1,6 +1,6 @@
 FROM openjdk:17
 
-LABEL maintainer="marv"
+LABEL maintainer="marvmarv44"
 
 EXPOSE 8080
 

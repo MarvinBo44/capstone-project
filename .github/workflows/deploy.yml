@@ -76,7 +76,7 @@ jobs:
         with:
           push: true
           #Set dockerhub project (replace "accesscoder/testdeploy")
-          tags: marvmarv4/capstoneproject:latest
+          tags: marvmarv44/capstoneproject:latest
           context: .
 
   deploy:
