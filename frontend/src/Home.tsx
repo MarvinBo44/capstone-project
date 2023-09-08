@@ -61,7 +61,7 @@ export default function Home() {
                             Location: {shelfItem.location}
                             <br/>
                             {apiResponseCompartment.map((compartmentItem) => (
-                                <Button key={compartmentItem._id}>{shelfItem.compartmentIds.includes(compartmentItem._id) ? compartmentItem.name : undefined}</Button>
+                                <div key={compartmentItem._id}>{shelfItem.compartmentIds.includes(compartmentItem._id) ? <Button>{compartmentItem.name}</Button> : null}</div>
                             ))}
                         </p>
                     ))}
