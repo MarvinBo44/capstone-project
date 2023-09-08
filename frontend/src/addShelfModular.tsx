@@ -94,7 +94,7 @@ export default function AddShelfModular() {
                 name: shelfName,
                 location: shelfLocation,
                 compartmentIds: actualCompartmentID
-            });
+            }).then(resetAllInputFields);
         } catch (error) {
             console.error(error);
         }
