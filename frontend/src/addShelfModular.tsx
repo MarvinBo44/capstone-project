@@ -8,6 +8,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {FormEvent, useState} from "react";
 import uuid from 'react-uuid';
+import {useNavigate} from "react-router-dom";
 
 export default function AddShelfModular() {
     const [shelfName, setShelfName] = useState<string>("")
@@ -19,6 +20,8 @@ export default function AddShelfModular() {
     const [shelfLocationError, setShelfLocationError] = useState<boolean>(false)
     const [rowAmountError, setRowAmountError] = useState<boolean>(false)
     const [columnAmountError, setColumnAmountError] = useState<boolean>(false)
+
+    const nav = useNavigate();
 
     function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -94,7 +97,7 @@ export default function AddShelfModular() {
                 name: shelfName,
                 location: shelfLocation,
                 compartmentIds: actualCompartmentID
-            }).then(resetAllInputFields);
+            }).then(resetAllInputFields).then(() => nav('/'))
         } catch (error) {
             console.error(error);
         }
@@ -105,6 +108,11 @@ export default function AddShelfModular() {
         setShelfLocation("");
         setRowAmount(0);
         setColumnAmount(0);
+    }
+
+    function cancel(){
+        resetAllInputFields();
+        nav('/');
     }
 
     return (
@@ -168,7 +176,7 @@ export default function AddShelfModular() {
                         justifyContent={'space-between'}>
                         <Button variant={"contained"}
                                 color={'error'}
-                                onClick={() => console.log(shelfName)}>Abbrechen</Button>
+                                onClick={cancel}>Abbrechen</Button>
 
                         <Button variant={"contained"} type={"submit"}>Regal erstellen</Button>
                     </Box>

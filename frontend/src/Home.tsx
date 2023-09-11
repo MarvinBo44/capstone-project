@@ -1,4 +1,4 @@
-import {Button} from "@mui/material";
+import {Box, Button, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -48,25 +48,32 @@ export default function Home() {
     }, [apiResponseCompartment]);
 
 
-
     return (
         <>
-            <div>
-                <h1>Daten aus MongoDB</h1>
-                <ul>
-                    {apiResponseShelf.map((shelfItem) => (
-                        <p key={shelfItem._id}>
-                            Name: {shelfItem.name}
-                            <br/>
-                            Location: {shelfItem.location}
-                            <br/>
-                            {apiResponseCompartment.map((compartmentItem) => (
-                                <div key={compartmentItem._id}>{shelfItem.compartmentIds.includes(compartmentItem._id) ? <Button>{compartmentItem.name}</Button> : null}</div>
+            <h1>blablablub</h1>
+
+            <Grid container={true}>
+
+                {apiResponseShelf.map((shelfItem: shelf) => (<div key={shelfItem._id}>
+                        <Box bgcolor={'#74b9ff'} width={'fit-content'} padding={'5px'} borderRadius={'10px'}>
+                            {shelfItem.name}df
+                        </Box>
+                        <Box bgcolor={'#81ecec'} width={'fit-content'} padding={'5px'} borderRadius={'10px'}>
+                            {shelfItem.location}
+                        </Box>
+                        <br/>
+                        <Grid container={true}>
+                            {apiResponseCompartment.map((compartmentItem: compartment) => (
+                                <div key={compartmentItem._id}>
+                                    {shelfItem.compartmentIds.includes(compartmentItem._id) ?
+                                        <Button>{compartmentItem.name}</Button> : null}
+                                </div>
                             ))}
-                        </p>
-                    ))}
-                </ul>
-            </div>
+                        </Grid>
+                    </div>
+                ))}
+            </Grid>
+
             <Button
                 onClick={() => nav('/addShelf')}
                 variant={'outlined'}>
