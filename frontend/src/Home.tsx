@@ -55,10 +55,17 @@ export default function Home() {
             <Grid container={true}>
 
                 {apiResponseShelf.map((shelfItem: shelf) => (<div key={shelfItem._id}>
-                        <Box bgcolor={'#74b9ff'} width={'fit-content'} padding={'5px'} borderRadius={'10px'}>
-                            {shelfItem.name}df
+                        <Box bgcolor={'#74b9ff'}
+                             width={'fit-content'}
+                             padding={'5px'}
+                             borderRadius={'10px'}>
+                            {shelfItem.name}
                         </Box>
-                        <Box bgcolor={'#81ecec'} width={'fit-content'} padding={'5px'} borderRadius={'10px'}>
+                        <Box
+                            bgcolor={'#81ecec'}
+                            width={'fit-content'}
+                            padding={'5px'}
+                            borderRadius={'10px'}>
                             {shelfItem.location}
                         </Box>
                         <br/>
