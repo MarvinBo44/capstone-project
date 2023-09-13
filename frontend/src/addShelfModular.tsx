@@ -41,14 +41,14 @@ export default function AddShelfModular() {
             setShelfLocationError(false);
         }
 
-        if (rowAmount === 0 || rowAmount > 26) {
+        if (rowAmount === 0 || rowAmount > 5) {
             setRowAmountError(true);
             hasError = true;
         } else {
             setRowAmountError(false);
         }
 
-        if (columnAmount === 0 || columnAmount > 26) {
+        if (columnAmount === 0 || columnAmount > 5) {
             setColumnAmountError(true);
             hasError = true;
         } else {
@@ -110,7 +110,7 @@ export default function AddShelfModular() {
         setColumnAmount(0);
     }
 
-    function cancel(){
+    function cancel() {
         resetAllInputFields();
         nav('/');
     }
@@ -149,7 +149,7 @@ export default function AddShelfModular() {
                         <TextField
                             type={'number'}
                             error={rowAmountError}
-                            placeholder={'Anzahl an Reihen'}
+                            placeholder={'Anzahl an Reihen (max. 5)'}
                             sx={{width: '75vw'}}
                             onChange={event => setRowAmount(Number(event.target.value))}
                         />
@@ -164,7 +164,7 @@ export default function AddShelfModular() {
                         <TextField
                             type={'number'}
                             error={columnAmountError}
-                            placeholder={'Anzahl an Spalten'}
+                            placeholder={'Anzahl an Spalten (max. 5)'}
                             sx={{width: '75vw'}}
                             onChange={event => setColumnAmount(Number(event.target.value))}
                         />
