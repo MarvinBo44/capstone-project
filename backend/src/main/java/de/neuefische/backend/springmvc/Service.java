@@ -3,6 +3,8 @@ package de.neuefische.backend.springmvc;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @org.springframework.stereotype.Service
 @AllArgsConstructor
@@ -16,5 +18,9 @@ public class Service {
 
     public Compartment addCompartment(Compartment compartment) {
         return compartmentRepo.save(compartment);
+    }
+
+    public List<Item> findItemsInACompartment(String id){
+         return compartmentRepo.findById(id).get().getItems();
     }
 }

@@ -3,14 +3,14 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
 
-type shelf = {
+type Shelf = {
     _id: string;
     name: string;
     location: string;
     compartmentIds: string[];
 };
 
-type compartment = {
+type Compartment = {
     _id: string;
     name: string;
     items: [];
@@ -18,13 +18,13 @@ type compartment = {
 
 export default function Home() {
     const nav = useNavigate();
-    const [apiResponseShelf, setApiResponseShelf] = useState<shelf[]>([]);
-    const [apiResponseCompartment, setApiResponseCompartment] = useState<compartment[]>([]);
+    const [apiResponseShelf, setApiResponseShelf] = useState<Shelf[]>([]);
+    const [apiResponseCompartment, setApiResponseCompartment] = useState<Compartment[]>([]);
 
     useEffect(() => {
         // Axios-Anfrage, um Daten von der API abzurufen
         axios
-            .get<compartment[]>("/api/compartment")
+            .get<Compartment[]>("/api/compartment")
             .then((response) => {
                 const sortedCompartments = response.data.sort((a, b) =>
                     a.name.localeCompare(b.name)
@@ -33,7 +33,7 @@ export default function Home() {
             })
             .then(() =>
                 axios
-                    .get<shelf[]>("/api/shelf")
+                    .get<Shelf[]>("/api/shelf")
                     .then((response) => {
                         setApiResponseShelf(response.data);
                     })
@@ -52,11 +52,11 @@ export default function Home() {
             <Divider></Divider>
             <br/>
 
-            {apiResponseShelf.map((shelfItem: shelf) => {
+            {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
 
                 {
-                    apiResponseCompartment.map((compartmentItem: compartment) => {
+                    apiResponseCompartment.map((compartmentItem: Compartment) => {
                         if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                             const compartmentName = compartmentItem.name;
 
@@ -88,7 +88,7 @@ export default function Home() {
                         </Grid>
                         <br/>
                         <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #1A72C9FF'}>
-                            {apiResponseCompartment.map((compartmentItem: compartment) => {
+                            {apiResponseCompartment.map((compartmentItem: Compartment) => {
                                 if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                                     const compartmentName = compartmentItem.name;
 
@@ -96,7 +96,8 @@ export default function Home() {
                                         <Button key={compartmentItem._id}
                                                 sx={{borderRadius:0, borderColor:'#1A72C9FF'}}
                                                 variant={"outlined"}
-                                                fullWidth={true}>
+                                                fullWidth={true}
+                                        onClick={() => nav('/id/' + compartmentItem._id)}>
                                             {compartmentName}
                                         </Button>
                                     </Box>;
