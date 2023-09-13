@@ -45,7 +45,8 @@ export default function Home() {
 
     return (
         <>
-            <Typography textAlign={"center"} variant={"h3"}>Kallax Sorty</Typography>
+            <Typography textAlign={"center"} variant={"h3"}>FindMyStuff</Typography>
+            <Typography textAlign={"center"} variant={"h4"}>made for IKEA Kallax</Typography>
 
             <br/>
             <br/>
@@ -85,14 +86,18 @@ export default function Home() {
                             </Box>
                         </Grid>
                         <br/>
-                        <Box display={"flex"} flexWrap={"wrap"}>
+                        <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #1A72C9FF'}>
                             {apiResponseCompartment.map((compartmentItem: compartment) => {
                                 if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                                     const compartmentName = compartmentItem.name;
 
                                     return <Box flexBasis={100 / counterCompartmentStartsWithA + "%"}>
-                                        <Button key={compartmentItem._id} variant={"outlined"}
-                                                fullWidth={true}>{compartmentName}</Button>
+                                        <Button key={compartmentItem._id}
+                                                sx={{borderRadius:0, borderColor:'#1A72C9FF'}}
+                                                variant={"outlined"}
+                                                fullWidth={true}>
+                                            {compartmentName}
+                                        </Button>
                                     </Box>;
                                 } else {
                                     return null;
