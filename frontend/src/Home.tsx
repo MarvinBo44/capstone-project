@@ -1,0 +1,116 @@
+import {Box, Button, Grid, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useEffect, useState} from "react";
+
+type shelf = {
+    _id: string;
+    name: string;
+    location: string;
+    compartmentIds: string[];
+};
+
+type compartment = {
+    _id: string;
+    name: string;
+    items: [];
+};
+
+export default function Home() {
+    const nav = useNavigate();
+    const [apiResponseShelf, setApiResponseShelf] = useState<shelf[]>([]);
+    const [apiResponseCompartment, setApiResponseCompartment] = useState<compartment[]>([]);
+
+    useEffect(() => {
+        // Axios-Anfrage, um Daten von der API abzurufen
+        axios
+            .get<compartment[]>("/api/compartment")
+            .then((response) => {
+                const sortedCompartments = response.data.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                );
+                setApiResponseCompartment(sortedCompartments);
+            })
+            .then(() =>
+                axios
+                    .get<shelf[]>("/api/shelf")
+                    .then((response) => {
+                        setApiResponseShelf(response.data);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+            );
+    }, []);
+
+    return (
+        <>
+            <Typography textAlign={"center"} variant={"h3"}>Kallax Sorty</Typography>
+
+            <br/>
+            <br/>
+
+            {apiResponseShelf.map((shelfItem: shelf) => {
+                let counterCompartmentStartsWithA: number = 0;
+
+                {
+                    apiResponseCompartment.map((compartmentItem: compartment) => {
+                        if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
+                            const compartmentName = compartmentItem.name;
+
+                            if (compartmentName.startsWith("A")) {
+                                counterCompartmentStartsWithA++;
+                            }
+                            return null;
+                        }
+                    })
+                }
+
+                return (
+                    <>
+                        <Grid container={true} justifyContent={"space-evenly"}>
+                            <Box bgcolor={"#74b9ff"}
+                                 width={"fit-content"}
+                                 padding={"7px"}
+                                 borderRadius={"10px"}>
+                                {shelfItem.name}
+                            </Box>
+                            <Box
+                                bgcolor={"#81ecec"}
+                                width={"fit-content"}
+                                padding={"7px"}
+                                borderRadius={"10px"}
+                            >
+                                {shelfItem.location}
+                            </Box>
+                        </Grid>
+                        <br/>
+                        <Box display={"flex"} flexWrap={"wrap"}>
+                            {apiResponseCompartment.map((compartmentItem: compartment) => {
+                                if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
+                                    const compartmentName = compartmentItem.name;
+
+                                    return <Box flexBasis={100 / counterCompartmentStartsWithA + "%"}>
+                                        <Button key={compartmentItem._id} variant={"outlined"}
+                                                fullWidth={true}>{compartmentName}</Button>
+                                    </Box>;
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </Box>
+                        <br/>
+                        <br/>
+                    </>
+                );
+            })}
+
+            <br/>
+            <Box display={"flex"} justifyContent={"center"}>
+                <Button onClick={() => nav("/addShelf")} variant={"contained"}>
+                    Regal hinzufügen
+                </Button>
+            </Box>
+        </>
+    );
+}
