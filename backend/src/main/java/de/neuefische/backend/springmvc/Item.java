@@ -8,5 +8,5 @@ import lombok.Data;
 public class Item {
     private String _id;
     private String name;
-    private String amount;
+    private int amount;
 }

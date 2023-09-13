@@ -9,11 +9,12 @@ export default function CompartmentList() {
         _id: string,
         name: string,
         amount: string
-    }
+    };
 
-    const [itemList, setItemList] = useState<Item[]>([])
-    const router = useParams<string>()
-    const routerId = router.id
+    const [itemList, setItemList] = useState<Item[]>([]);
+    let [counter, setCounter] = useState<number>(0)
+    const router = useParams<string>();
+    const routerId = router.id;
     const nav = useNavigate();
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export default function CompartmentList() {
             .then((response) => {
                 setItemList(response.data);
             })
-    }, [router, routerId]);
+    }, [counter, routerId]);
 
     function getColor() {
         return "hsl(" + 360 * Math.random() + ',' +
@@ -45,31 +46,34 @@ export default function CompartmentList() {
             <br/>
             {itemList.map((item: Item) => {
                 return (
-                    <>
-                        <Box key={item._id}
+
+                    <Box key={item._id}
+                         display={'flex'}
+                         margin={'5vw'}
+                         gap={'10%'}>
+
+                        <Box width={'60%'}
                              display={'flex'}
-                             margin={'5vw'}
-                             gap={'10%'}>
-
-                            <Box width={'60%'}
-                                 display={'flex'}
-                                 alignItems={"center"}
-                                 padding={'5px'}
-                                 bgcolor={'' + getColor()}
-                                 borderRadius={'15px'}
-                                 justifyContent={'center'}>
-                                <Typography variant={"body1"}>{item.name}</Typography>
-                            </Box>
-
-                            <Box width={'30%'}
-                                 textAlign={'center'}
-                                 padding={'5px'}
-                                 bgcolor={'' + getColor()}
-                                 borderRadius={'15px'}>
-                                <Typography>{item.amount}</Typography>
-                            </Box>
+                             alignItems={"center"}
+                             padding={'5px'}
+                             bgcolor={'' + getColor()}
+                             borderRadius={'15px'}
+                             justifyContent={'center'}>
+                            <Typography variant={"body1"}>{item.name}</Typography>
                         </Box>
-                    </>
+
+                        <Box width={'30%'}
+                             textAlign={'center'}
+                             padding={'5px'}
+                             bgcolor={'' + getColor()}
+                             borderRadius={'15px'}>
+                            <Typography>{item.amount}</Typography>
+                        </Box>
+
+                        <Box><Button onClick={() => {
+                            axios.put(("/api/test/46853107-e934-f106-1cb0-76060ae3e075/1")).then(() => setCounter(counter++))
+                        }}>+</Button></Box>
+                    </Box>
                 )
             })}
         </>

@@ -15,29 +15,33 @@ public class Controller {
 
     //Shelf CRUD
     @PostMapping("/shelf")
-    public Shelf addShelf(@RequestBody Shelf shelf){
+    public Shelf addShelf(@RequestBody Shelf shelf) {
         return service.addShelf(shelf);
     }
 
     @GetMapping("/shelf")
-    public List<Shelf> getAllShelfs(){
+    public List<Shelf> getAllShelfs() {
         return service.getShelfRepo().findAll();
     }
 
     // Compartment CRUD
     @PostMapping("/compartment")
-    public Compartment addCompartment(@RequestBody Compartment compartment){
+    public Compartment addCompartment(@RequestBody Compartment compartment) {
         return service.addCompartment(compartment);
     }
 
     @GetMapping("/compartment")
-    public List<Compartment> getAllCompartments(){
+    public List<Compartment> getAllCompartments() {
         return service.getCompartmentRepo().findAll();
     }
 
     @GetMapping("/OneCompartment/{id}")
-    public List<Item> findItemsInACompartment(@PathVariable String id){
+    public List<Item> findItemsInACompartment(@PathVariable String id) {
         return service.findItemsInACompartment(id);
     }
 
+    @PutMapping("/test/{compartmentId}/{itemId}")
+    public int raiseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String itemId) {
+        return service.raiseItemAmountByOne(compartmentId, itemId);
+    }
 }
