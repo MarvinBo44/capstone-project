@@ -1,4 +1,4 @@
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Button, Divider, Grid, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -45,10 +45,11 @@ export default function Home() {
 
     return (
         <>
-            <Typography textAlign={"center"} variant={"h3"}>FindMyStuff</Typography>
-            <Typography textAlign={"center"} variant={"h4"}>made for IKEA Kallax</Typography>
+            <Typography textAlign={"center"} variant={"h4"}>FindMyStuff</Typography>
+            <Typography textAlign={"center"} variant={"h5"}>made for IKEA Kallax</Typography>
 
             <br/>
+            <Divider></Divider>
             <br/>
 
             {apiResponseShelf.map((shelfItem: shelf) => {
@@ -70,20 +71,20 @@ export default function Home() {
                 return (
                     <>
                         <Grid container={true} justifyContent={"space-evenly"}>
-                            <Box bgcolor={"#74b9ff"}
+                            <Typography bgcolor={"#74b9ff"}
                                  width={"fit-content"}
-                                 padding={"7px"}
+                                 padding={"10px"}
                                  borderRadius={"10px"}>
                                 {shelfItem.name}
-                            </Box>
-                            <Box
+                            </Typography>
+                            <Typography
                                 bgcolor={"#81ecec"}
                                 width={"fit-content"}
-                                padding={"7px"}
+                                padding={"10px"}
                                 borderRadius={"10px"}
                             >
                                 {shelfItem.location}
-                            </Box>
+                            </Typography>
                         </Grid>
                         <br/>
                         <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #1A72C9FF'}>
