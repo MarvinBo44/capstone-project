@@ -35,5 +35,9 @@ public class Controller {
         return service.getCompartmentRepo().findAll();
     }
 
-    // add compartmentsIDs to a shelf
+    @GetMapping("/OneCompartment/{id}")
+    public List<Item> findItemsInACompartment(@PathVariable String id){
+        return service.findItemsInACompartment(id);
+    }
+
 }
