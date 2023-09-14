@@ -39,4 +39,21 @@ public class Service {
         }
         throw new RuntimeException("Item not found in compartment");
     }
+
+    public int decreaseItemAmountByOne(String compartmentId, String itemId) {
+        Compartment compartment = compartmentRepo.findById(compartmentId).orElseThrow(() -> new RuntimeException("Compartment not found"));
+
+        List<Item> items = compartment.getItems();
+
+        for (Item item : items) {
+            if (item.get_id().equals(itemId)) {
+                int currentAmount = item.getAmount();
+                currentAmount--;
+                item.setAmount(currentAmount);
+                compartmentRepo.save(compartment);
+                return item.getAmount();
+            }
+        }
+        throw new RuntimeException("Item not found in compartment");
+    }
 }

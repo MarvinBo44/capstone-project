@@ -12,7 +12,7 @@ export default function CompartmentList() {
     };
 
     const [itemList, setItemList] = useState<Item[]>([]);
-    let [counter, setCounter] = useState<number>(0)
+    const [counter, setCounter] = useState<number>(0)
     const router = useParams<string>();
     const routerId = router.id;
     const nav = useNavigate();
@@ -23,9 +23,9 @@ export default function CompartmentList() {
             .then((response) => {
                 setItemList(response.data);
             })
-    }, [counter, routerId]);
+    }, [routerId, counter]);
 
-    function getColor() {
+    function getRandomPastelColor() {
         return "hsl(" + 360 * Math.random() + ',' +
             (25 + 70 * Math.random()) + '%,' +
             (85 + 10 * Math.random()) + '%)'
@@ -50,13 +50,13 @@ export default function CompartmentList() {
                     <Box key={item._id}
                          display={'flex'}
                          margin={'5vw'}
-                         gap={'10%'}>
+                         gap={'2%'}>
 
                         <Box width={'60%'}
                              display={'flex'}
                              alignItems={"center"}
                              padding={'5px'}
-                             bgcolor={'' + getColor()}
+                             bgcolor={'' + getRandomPastelColor()}
                              borderRadius={'15px'}
                              justifyContent={'center'}>
                             <Typography variant={"body1"}>{item.name}</Typography>
@@ -65,14 +65,27 @@ export default function CompartmentList() {
                         <Box width={'30%'}
                              textAlign={'center'}
                              padding={'5px'}
-                             bgcolor={'' + getColor()}
+                             bgcolor={'' + getRandomPastelColor()}
                              borderRadius={'15px'}>
                             <Typography>{item.amount}</Typography>
                         </Box>
 
-                        <Box><Button onClick={() => {
-                            axios.put(("/api/test/46853107-e934-f106-1cb0-76060ae3e075/1")).then(() => setCounter(counter++))
-                        }}>+</Button></Box>
+                        <Box>
+                            <Button variant={'outlined'}
+                                    sx={{borderRadius: '15px'}}
+                                    onClick={() => {
+                                        axios.put(("/api/plus/"+ routerId +"/" + item._id)).then(() => setCounter(counter + 1))}}>
+                                +
+                            </Button>
+                        </Box>
+                        <Box>
+                            <Button variant={'outlined'}
+                                    sx={{borderRadius: '15px'}}
+                                    onClick={() => {
+                                        axios.put(("/api/minus/"+ routerId +"/" + item._id)).then(() => setCounter(counter - 1))}}>
+                                -
+                            </Button>
+                        </Box>
                     </Box>
                 )
             })}

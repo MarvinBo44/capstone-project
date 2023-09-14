@@ -40,8 +40,13 @@ public class Controller {
         return service.findItemsInACompartment(id);
     }
 
-    @PutMapping("/test/{compartmentId}/{itemId}")
+    @PutMapping("/plus/{compartmentId}/{itemId}")
     public int raiseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String itemId) {
         return service.raiseItemAmountByOne(compartmentId, itemId);
+    }
+
+    @PutMapping("/minus/{compartmentId}/{itemId}")
+    public int decreaseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String itemId) {
+        return service.decreaseItemAmountByOne(compartmentId, itemId);
     }
 }
