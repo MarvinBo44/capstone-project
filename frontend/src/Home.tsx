@@ -97,7 +97,7 @@ export default function Home() {
                                         <Button sx={{borderRadius: 0, borderColor: '#1A72C9FF'}}
                                                 variant={"outlined"}
                                                 fullWidth={true}
-                                                onClick={() => nav('/id/' + compartmentItem._id + '/' + compartmentItem.name)}>
+                                                onClick={() => nav('/id/' + compartmentItem._id + '/' + compartmentItem.name + '/' + shelfItem.name + '/' + shelfItem.location)}>
                                             {compartmentName}
                                         </Button>
                                     </Box>;

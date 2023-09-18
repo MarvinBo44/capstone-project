@@ -14,17 +14,19 @@ export default function CompartmentList() {
     const [itemList, setItemList] = useState<Item[]>([]);
     const [counter, setCounter] = useState<number>(0);
     const router = useParams();
-    const routerId = router.id;
-    const routerName = router.name;
+    const compartmentId = router.compartmentId;
+    const compartmentName = router.compartmentName;
+    const shelfName = router.shelfName;
+    const shelfLocation = router.shelfLocation;
     const nav = useNavigate();
 
     useEffect(() => {
         axios
-            .get("/api/OneCompartment/" + routerId)
+            .get("/api/OneCompartment/" + compartmentId)
             .then((response) => {
                 setItemList(response.data);
             })
-    }, [routerId, counter]);
+    }, [compartmentId, counter]);
 
     const stringToColor = (str: string, saturation = 65, lightness = 85) => {
         let hash = 0;
@@ -47,7 +49,7 @@ export default function CompartmentList() {
                 </Button>
                 <Button variant={'contained'}
                         sx={{borderRadius: '15px'}}
-                        onClick={() => nav('/addItem/' + routerId)}>
+                        onClick={() => nav('/addItem/' + compartmentId)}>
                     Gegenstand hinzufügen
                 </Button>
             </Box>
@@ -56,7 +58,9 @@ export default function CompartmentList() {
             <br/>
 
             <Box>
-            <Typography>{routerName}</Typography>
+                <Typography>{compartmentName}</Typography>
+                <Typography>{shelfName}</Typography>
+                <Typography>{shelfLocation}</Typography>
             </Box>
             {itemList.map((item: Item) => {
                 return (
@@ -88,7 +92,7 @@ export default function CompartmentList() {
                                     size={'small'}
                                     sx={{borderRadius: '15px'}}
                                     onClick={() => {
-                                        axios.put(("/api/plus/" + routerId + "/" + item._id))
+                                        axios.put(("/api/plus/" + compartmentId + "/" + item._id))
                                             .then(() => setCounter(counter + 1))
                                     }}>
                                 +
@@ -98,7 +102,7 @@ export default function CompartmentList() {
                                     size={'small'}
                                     sx={{borderRadius: '15px'}}
                                     onClick={() => {
-                                        axios.put(("/api/minus/" + routerId + "/" + item._id))
+                                        axios.put(("/api/minus/" + compartmentId + "/" + item._id))
                                             .then(() => setCounter(counter - 1))
                                     }}>
                                 -
