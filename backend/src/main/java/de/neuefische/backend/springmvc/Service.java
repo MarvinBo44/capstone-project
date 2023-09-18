@@ -6,21 +6,81 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@org.springframework.stereotype.Service
 @AllArgsConstructor
+@org.springframework.stereotype.Service
 public class Service {
     private ShelfRepo shelfRepo;
     private CompartmentRepo compartmentRepo;
 
-    public Shelf addShelf(Shelf shelf){
+    //Shelf
+    public Shelf addShelf(Shelf shelf) {
         return shelfRepo.save(shelf);
     }
 
+
+    //Compartment
     public Compartment addCompartment(Compartment compartment) {
         return compartmentRepo.save(compartment);
     }
 
-    public List<Item> findItemsInACompartment(String id){
-         return compartmentRepo.findById(id).get().getItems();
+    public List<Item> findItemsInACompartment(String id) {
+        return compartmentRepo.findById(id).get().getItems();
+    }
+
+
+    //Item
+    public int raiseItemAmountByOne(String compartmentId, String itemId) {
+        Compartment compartment = compartmentRepo.findById(compartmentId).orElseThrow(() -> new RuntimeException("Compartment not found"));
+
+        List<Item> items = compartment.getItems();
+
+        for (Item item : items) {
+            if (item.get_id().equals(itemId)) {
+                int currentAmount = item.getAmount();
+                currentAmount++;
+                item.setAmount(currentAmount);
+                compartmentRepo.save(compartment);
+                return item.getAmount();
+            }
+        }
+        throw new RuntimeException("Item not found in compartment");
+    }
+
+    public int decreaseItemAmountByOne(String compartmentId, String itemId) {
+        Compartment compartment = compartmentRepo.findById(compartmentId).orElseThrow(() -> new RuntimeException("Compartment not found"));
+
+        List<Item> items = compartment.getItems();
+
+        for (Item item : items) {
+            if (item.get_id().equals(itemId)) {
+                int currentAmount = item.getAmount();
+                currentAmount--;
+                item.setAmount(currentAmount);
+                compartmentRepo.save(compartment);
+                return item.getAmount();
+            }
+        }
+        throw new RuntimeException("Item not found in compartment");
+    }
+
+    public List<Item> addItem(String compartmentId, Item item) {
+        Compartment compartment = compartmentRepo.findById(compartmentId)
+                .orElseThrow(() -> new RuntimeException("compartment with id: " + compartmentId + " not found."));
+        compartment.getItems().add(item);
+        compartmentRepo.save(compartment);
+        return compartment.getItems();
+    }
+
+    public Compartment deleteItem(String compartmentId, String itemId) {
+        Compartment compartment = compartmentRepo.findById(compartmentId)
+                .orElseThrow(() -> new RuntimeException("compartment with id: " + compartmentId + " not found."));
+        List<Item> items = compartment.getItems();
+        for (Item item : items) {
+            if (item.get_id().equals(itemId)) {
+                compartment.getItems().remove(item);
+                return compartmentRepo.save(compartment);
+            }
+        }
+        throw new RuntimeException("Item not found in compartment");
     }
 }

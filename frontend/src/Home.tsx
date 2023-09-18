@@ -22,7 +22,6 @@ export default function Home() {
     const [apiResponseCompartment, setApiResponseCompartment] = useState<Compartment[]>([]);
 
     useEffect(() => {
-        // Axios-Anfrage, um Daten von der API abzurufen
         axios
             .get<Compartment[]>("/api/compartment")
             .then((response) => {
@@ -69,12 +68,12 @@ export default function Home() {
                 }
 
                 return (
-                    <>
+                    <div key={shelfItem._id}>
                         <Grid container={true} justifyContent={"space-evenly"}>
                             <Typography bgcolor={"#74b9ff"}
-                                 width={"fit-content"}
-                                 padding={"10px"}
-                                 borderRadius={"10px"}>
+                                        width={"fit-content"}
+                                        padding={"10px"}
+                                        borderRadius={"10px"}>
                                 {shelfItem.name}
                             </Typography>
                             <Typography
@@ -86,18 +85,19 @@ export default function Home() {
                                 {shelfItem.location}
                             </Typography>
                         </Grid>
+
                         <br/>
+
                         <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #1A72C9FF'}>
                             {apiResponseCompartment.map((compartmentItem: Compartment) => {
                                 if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                                     const compartmentName = compartmentItem.name;
 
-                                    return <Box flexBasis={100 / counterCompartmentStartsWithA + "%"}>
-                                        <Button key={compartmentItem._id}
-                                                sx={{borderRadius:0, borderColor:'#1A72C9FF'}}
+                                    return <Box key={compartmentItem._id} flexBasis={100 / counterCompartmentStartsWithA + "%"}>
+                                        <Button sx={{borderRadius: 0, borderColor: '#1A72C9FF'}}
                                                 variant={"outlined"}
                                                 fullWidth={true}
-                                        onClick={() => nav('/id/' + compartmentItem._id)}>
+                                                onClick={() => nav('/id/' + compartmentItem._id + '/' + compartmentItem.name + '/' + shelfItem.name + '/' + shelfItem.location)}>
                                             {compartmentName}
                                         </Button>
                                     </Box>;
@@ -108,7 +108,7 @@ export default function Home() {
                         </Box>
                         <br/>
                         <br/>
-                    </>
+                    </div>
                 );
             })}
 

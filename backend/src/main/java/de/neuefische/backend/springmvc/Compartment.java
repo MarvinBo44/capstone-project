@@ -2,7 +2,6 @@ package de.neuefische.backend.springmvc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.util.List;
 
 @Data
