@@ -25,11 +25,14 @@ export default function CompartmentList() {
             })
     }, [routerId, counter]);
 
-    function getRandomPastelColor() {
-        return "hsl(" + 360 * Math.random() + ',' +
-            (25 + 70 * Math.random()) + '%,' +
-            (85 + 10 * Math.random()) + '%)'
-    }
+    const stringToColor = (str: string, saturation = 65, lightness = 80) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
+        }
+        return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
+    };
 
     return (
         <>
@@ -66,7 +69,7 @@ export default function CompartmentList() {
                                  display={'flex'}
                                  alignItems={"center"}
                                  padding={'5px'}
-                                 bgcolor={'' + getRandomPastelColor()}
+                                 bgcolor={'' + stringToColor(item.name)}
                                  borderRadius={'15px'}
                                  justifyContent={'center'}>
                                 <Typography variant={"body1"}>{item.name}</Typography>
@@ -75,7 +78,7 @@ export default function CompartmentList() {
                             <Box width={'30%'}
                                  textAlign={'center'}
                                  padding={'5px'}
-                                 bgcolor={'' + getRandomPastelColor()}
+                                 bgcolor={'' + stringToColor(item._id)}
                                  borderRadius={'15px'}>
                                 <Typography>{item.amount}</Typography>
                             </Box>
