@@ -49,7 +49,7 @@ export default function CompartmentList() {
                 </Button>
                 <Button variant={'contained'}
                         sx={{borderRadius: '15px'}}
-                        onClick={() => nav('/addItem/' + compartmentId)}>
+                        onClick={() => nav("/addItem/" + compartmentId + "/" + compartmentName + "/" + shelfName + "/" + shelfLocation)}>
                     Gegenstand hinzufügen
                 </Button>
             </Box>
@@ -103,9 +103,22 @@ export default function CompartmentList() {
                                     sx={{borderRadius: '15px'}}
                                     onClick={() => {
                                         axios.put(("/api/minus/" + compartmentId + "/" + item._id))
+                                            .then(r => console.log(r))
                                             .then(() => setCounter(counter - 1))
+
                                     }}>
                                 -
+                            </Button>
+
+                            <Button variant={'outlined'} // delete
+                                    sx={{borderRadius: '15px'}}
+                                    onClick={() => {
+                                        axios.delete("/api/delete/" + compartmentId + "/" + item._id)
+                                            .then(r => {
+                                                console.log(r);
+                                            setCounter(counter + 1)})
+                                    }}>
+                                delete
                             </Button>
                         </Box>
                     </Box>

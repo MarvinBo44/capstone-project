@@ -2,6 +2,7 @@ package de.neuefische.backend.springmvc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import java.util.List;
 
 @Data
@@ -11,10 +12,13 @@ public class Service {
     private ShelfRepo shelfRepo;
     private CompartmentRepo compartmentRepo;
 
+    //Shelf
     public Shelf addShelf(Shelf shelf) {
         return shelfRepo.save(shelf);
     }
 
+
+    //Compartment
     public Compartment addCompartment(Compartment compartment) {
         return compartmentRepo.save(compartment);
     }
@@ -23,6 +27,8 @@ public class Service {
         return compartmentRepo.findById(id).get().getItems();
     }
 
+
+    //Item
     public int raiseItemAmountByOne(String compartmentId, String itemId) {
         Compartment compartment = compartmentRepo.findById(compartmentId).orElseThrow(() -> new RuntimeException("Compartment not found"));
 
@@ -58,9 +64,23 @@ public class Service {
     }
 
     public List<Item> addItem(String compartmentId, Item item) {
-        Compartment compartment = compartmentRepo.findById(compartmentId).orElseThrow(() -> new RuntimeException("compartment with id: " + compartmentId + " not found."));
+        Compartment compartment = compartmentRepo.findById(compartmentId)
+                .orElseThrow(() -> new RuntimeException("compartment with id: " + compartmentId + " not found."));
         compartment.getItems().add(item);
         compartmentRepo.save(compartment);
         return compartment.getItems();
+    }
+
+    public Compartment deleteItem(String compartmentId, String itemId) {
+        Compartment compartment = compartmentRepo.findById(compartmentId)
+                .orElseThrow(() -> new RuntimeException("compartment with id: " + compartmentId + " not found."));
+        List<Item> items = compartment.getItems();
+        for (Item item : items) {
+            if (item.get_id().equals(itemId)) {
+                compartment.getItems().remove(item);
+                return compartmentRepo.save(compartment);
+            }
+        }
+        throw new RuntimeException("Item not found in compartment");
     }
 }

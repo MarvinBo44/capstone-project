@@ -9,19 +9,21 @@ import '@fontsource/roboto/700.css';
 import './AddItem.css'
 import {useNavigate, useParams} from "react-router-dom";
 
-
 export default function AddItem() {
     const [name, setName] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
 
     const nav = useNavigate()
     const router = useParams<string>();
-    const routerId = router.id;
+    const compartmentId = router.compartmentId;
+    const compartmentName = router.compartmentName;
+    const shelfName = router.shelfName;
+    const shelfLocation = router.shelfLocation;
 
     const [nameError, setNameError] = useState<boolean>(false)
     const [amountError, setAmountError] = useState<boolean>(false)
 
-    function submit(event: FormEvent<HTMLFormElement>){
+    function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         let hasError = false;
 
@@ -39,22 +41,24 @@ export default function AddItem() {
             setAmountError(false);
         }
 
-        if(!hasError){
+        if (!hasError) {
             axiosPost();
-            resetAllFields();
-            nav('/id/' + routerId)
         }
     }
 
-    function axiosPost(){
-        axios.post(("/api/add/" + routerId), {
+    function axiosPost() {
+        axios.post(("/api/add/" + compartmentId), {
             _id: uuid(),
             name: name,
             amount: amount
-        }).then(r => console.log(r))
+        }).then(r => {
+            console.log(r);
+            resetAllFields();
+            nav("/id/" + compartmentId + "/" + compartmentName + "/" + shelfName + "/" + shelfLocation);
+        })
     }
 
-    function resetAllFields(){
+    function resetAllFields() {
         setName("");
         setAmount(0);
     }
@@ -103,7 +107,7 @@ export default function AddItem() {
                         <Button variant={'contained'}
                                 color={'error'}
                                 sx={{borderRadius: '15px'}}
-                        onClick={() => nav('/')}>
+                                onClick={() => nav('/')}>
                             Abbruch
                         </Button>
                         <Button variant={'contained'}
@@ -112,7 +116,8 @@ export default function AddItem() {
                             Hinzufügeen
                         </Button>
                     </Box>
-                    {name === "" ? "LEER" : name}<br/>{nameError ? "error" : "NOerror"}<br/><br/>{amount}<br/>{amountError ? "error" : "NOerror"} <br/><br/>
+                    {name === "" ? "LEER" : name}<br/>{nameError ? "error" : "NOerror"}<br/><br/>{amount}<br/>{amountError ? "error" : "NOerror"}
+                    <br/><br/>
                 </Box>
             </form>
         </>
