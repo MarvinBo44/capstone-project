@@ -12,9 +12,10 @@ export default function CompartmentList() {
     };
 
     const [itemList, setItemList] = useState<Item[]>([]);
-    const [counter, setCounter] = useState<number>(0)
-    const router = useParams<string>();
+    const [counter, setCounter] = useState<number>(0);
+    const router = useParams();
     const routerId = router.id;
+    const routerName = router.name;
     const nav = useNavigate();
 
     useEffect(() => {
@@ -25,7 +26,7 @@ export default function CompartmentList() {
             })
     }, [routerId, counter]);
 
-    const stringToColor = (str: string, saturation = 65, lightness = 80) => {
+    const stringToColor = (str: string, saturation = 65, lightness = 85) => {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -55,7 +56,7 @@ export default function CompartmentList() {
             <br/>
 
             <Box>
-                {routerId} <Typography>ort pfeil regal pfeil fachname</Typography>
+            <Typography>{routerName}</Typography>
             </Box>
             {itemList.map((item: Item) => {
                 return (
@@ -65,7 +66,7 @@ export default function CompartmentList() {
                             margin={'5vw'}
                             gap={'2%'}>
 
-                            <Box width={'60%'}
+                            <Box width={'60%'} // name of item
                                  display={'flex'}
                                  alignItems={"center"}
                                  padding={'5px'}
@@ -75,7 +76,7 @@ export default function CompartmentList() {
                                 <Typography variant={"body1"}>{item.name}</Typography>
                             </Box>
 
-                            <Box width={'30%'}
+                            <Box width={'30%'} // amount of items
                                  textAlign={'center'}
                                  padding={'5px'}
                                  bgcolor={'' + stringToColor(item._id)}
@@ -83,7 +84,7 @@ export default function CompartmentList() {
                                 <Typography>{item.amount}</Typography>
                             </Box>
 
-                            <Button variant={'outlined'}
+                            <Button variant={'outlined'} // plus button
                                     size={'small'}
                                     sx={{borderRadius: '15px'}}
                                     onClick={() => {
@@ -92,7 +93,8 @@ export default function CompartmentList() {
                                     }}>
                                 +
                             </Button>
-                            <Button variant={'outlined'}
+
+                            <Button variant={'outlined'} // minus button
                                     size={'small'}
                                     sx={{borderRadius: '15px'}}
                                     onClick={() => {
