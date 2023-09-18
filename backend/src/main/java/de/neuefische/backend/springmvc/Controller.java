@@ -39,7 +39,7 @@ public class Controller {
     public List<Item> findItemsInACompartment(@PathVariable String id) {
         return service.findItemsInACompartment(id);
     }
-
+    //Item CRUD
     @PutMapping("/plus/{compartmentId}/{itemId}")
     public int raiseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String itemId) {
         return service.raiseItemAmountByOne(compartmentId, itemId);
@@ -48,5 +48,10 @@ public class Controller {
     @PutMapping("/minus/{compartmentId}/{itemId}")
     public int decreaseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String itemId) {
         return service.decreaseItemAmountByOne(compartmentId, itemId);
+    }
+
+    @PostMapping("/add/{compartmentId}")
+    public List<Item> addItem(@PathVariable String compartmentId, @RequestBody Item item){
+        return service.addItem(compartmentId, item);
     }
 }

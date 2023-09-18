@@ -10,7 +10,7 @@ import {FormEvent, useState} from "react";
 import uuid from 'react-uuid';
 import {useNavigate} from "react-router-dom";
 
-export default function AddShelfModular() {
+export default function AddShelf() {
     const [shelfName, setShelfName] = useState<string>("")
     const [shelfLocation, setShelfLocation] = useState<string>("")
     const [rowAmount, setRowAmount] = useState<number>(0)
@@ -118,7 +118,7 @@ export default function AddShelfModular() {
     return (
         <>
             <form onSubmit={submit}>
-                <FormGroup sx={{margin: '3vw'}}>
+                <FormGroup sx={{margin: '5vw'}}>
                     <Box display={'flex'}
                          justifyContent={'center'}>
                         <Typography
