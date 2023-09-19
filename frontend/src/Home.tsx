@@ -126,8 +126,6 @@ export default function Home() {
                         </Box>
                         <br/>
                         <br/>
-                        <br/>
-                        <br/>
                     </Box>
                 );
             })}
