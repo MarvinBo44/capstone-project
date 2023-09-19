@@ -3,6 +3,10 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 export default function CompartmentList() {
     type Item = {
@@ -68,7 +72,7 @@ export default function CompartmentList() {
                         <Box
                             display={'flex'}
                             margin={'5vw'}
-                            gap={'2%'}>
+                            gap={'1%'}>
 
                             <Box width={'60%'} // name of item
                                  display={'flex'}
