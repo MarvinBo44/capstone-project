@@ -21,7 +21,7 @@ public class Controller {
     }
 
     @GetMapping("/shelf")
-    public List<Shelf> getAllShelfs() {
+    public List<Shelf> getAllShelf() {
         return service.getShelfRepo().findAll();
     }
 
