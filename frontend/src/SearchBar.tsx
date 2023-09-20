@@ -1,106 +1,77 @@
-import React, {FormEvent, useState} from "react";
-import axios from "axios";
-import {Box, Button, createTheme, TextField, ThemeProvider,} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Button, TextField} from "@mui/material";
 
-export default function SearchBar() {
-    const [searchtext, setSearchtext] = useState<string>("");
-    const [searchTextError, setSearchTextError] = useState<boolean>(false);
-    const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
-
-    type Item = {
+interface SearchResult {
+    compartment: {
+        _id: string;
+        name: string;
+    };
+    matchingItems: {
         _id: string;
         name: string;
         amount: number;
-    };
+    }[];
+}
 
-    type Compartment = {
-        _id: string;
-        name: string;
-        items: Item[];
-    };
+const ItemSearch: React.FC = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
-    type SearchResult = {
-        compartment: Compartment;
-        matchingItems: Item[];
-    };
-
-    function submit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        let hasError = false;
-
-        if (searchtext === "") {
-            setSearchTextError(true);
-            hasError = true;
-        } else {
-            setSearchTextError(false);
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/findItemByKeyword/${searchTerm}`);
+            const data = await response.json();
+            setSearchResults(data);
+        } catch (error) {
+            console.error('Fehler beim Suchen:', error);
         }
+    };
 
-        if (!hasError) {
-            axiosSearch();
-        }
-    }
-
-    function axiosSearch() {
-        axios.get("/api/findItemByKeyword/" + searchtext).then((response) => {
-            console.log("Response data:", response.data);
-            console.log(searchResults)
-            const compartmentData = response.data.compartment;
-            const matchingItemsData = response.data.matchingItems;
-
-            setSearchResults({compartment: compartmentData, matchingItems: matchingItemsData});
-            resetField();
-        });
-    }
-
-    function resetField() {
-        setSearchtext("");
-    }
-
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: "#CBE2D8",
-            },
-            secondary: {
-                main: "#ffc2d1",
-            },
-        },
-    });
+    const handleClear = () => {
+        setSearchTerm('');
+        setSearchResults([]);
+    };
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <Box marginTop={"2vh"} marginBottom={"6vh"}>
-                    <form onSubmit={submit}>
-                        <Box display={"flex"} justifyContent={"space-evenly"}>
-                            <TextField
-                                autoComplete={"off"}
-                                placeholder={"Suche"}
-                                error={searchTextError}
-                                sx={{width: "70vw"}}
-                                type={"text"}
-                                onChange={(event) => setSearchtext(event.target.value)}
-                            />
-                            <Button variant={"contained"} type={"submit"} sx={{width: "20vw"}}>
-                                Suchen
-                            </Button>
-                        </Box>
-                    </form>
-
-                    {/*<Box display={"flex"} flexWrap={"wrap"} border={'2px solid #545454'}>*/}
-                    {/*    {searchResults?.matchingItems.map((item: Item) => {*/}
-
-
-                    {/*        return <Box key={item._id}>*/}
-                    {/*            <div>*/}
-                    {/*                {searchResults === null ? <p>null</p> : item.name}*/}
-                    {/*            </div>*/}
-                    {/*        </Box>;*/}
-                    {/*    })}*/}
-                    {/*</Box>*/}
-
-                </Box>
-            </ThemeProvider>
+            <Box display={'flex'}
+                 justifyContent={'space-evenly'}
+                 marginBottom={'4vh'}>
+                <TextField
+                    type="text"
+                    size={'small'}
+                    autoComplete={'off'}
+                    placeholder="Suchen"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Button onClick={handleSearch}
+                        variant={'contained'}
+                        size={'small'}>
+                    Suchen
+                </Button>
+                <Button onClick={handleClear}
+                        size={'small'}
+                        variant={'contained'}>
+                    Clear
+                </Button>
+            </Box>
+            <Box>
+                {searchResults.map((result) => (
+                    <div key={result.compartment._id}>
+                        <h2>Abteilung: {result.compartment.name}</h2>
+                        <ul>
+                            {result.matchingItems.map((item) => (
+                                <li key={item._id}>
+                                    {item.name} - Menge: {item.amount} - Fach: {result.compartment.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </Box>
         </>
     );
-}
+};
+
+export default ItemSearch;
