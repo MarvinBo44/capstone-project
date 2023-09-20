@@ -141,6 +141,7 @@ export default function AddShelf() {
                     <form onSubmit={submit}>
                         <FormGroup sx={{margin: '5vw'}}>
                             <Box display={'flex'}
+                                 maxWidth={'800px'}
                                  justifyContent={'center'}>
                                 <Typography
                                     fontSize={'xx-large'}>
@@ -164,6 +165,7 @@ export default function AddShelf() {
                             <br/>
                             <Box
                                 display={'flex'}
+                                maxWidth={'800px'}
                                 gap={'3vw'}
                                 alignItems={'center'}
                                 justifyContent={"space-between"}>
@@ -179,6 +181,7 @@ export default function AddShelf() {
                             </Box>
                             <br/>
                             <Box display={'flex'}
+                                 maxWidth={'800px'}
                                  gap={'3vw'}
                                  alignItems={'center'}
                                  justifyContent={"space-between"}>
@@ -194,6 +197,7 @@ export default function AddShelf() {
                             <br/>
                             <Box
                                 display={'flex'}
+                                maxWidth={'800px'}
                                 justifyContent={'space-between'}>
                                 <Button variant={"contained"}
                                         color={'secondary'}

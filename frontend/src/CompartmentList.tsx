@@ -54,13 +54,15 @@ export default function CompartmentList() {
 
     return (
         <>
-            <Box marginTop={'18vh'} marginBottom={'12vh'}>
+            <Box marginTop={'18vh'}
+                 marginBottom={'12vh'}>
                 <ThemeProvider theme={theme}>
                     {itemList.map((item: Item) => {
                         return (
                             <Box key={item._id}>
                                 <Box
                                     display={'flex'}
+                                    maxWidth={'800px'}
                                     marginTop={'5vw'}
                                     marginLeft={'5vw'}
                                     marginRight={'5vw'}
