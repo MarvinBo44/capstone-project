@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Box, Button, FormGroup, TextField, Typography} from "@mui/material";
+import {Box, Button, createTheme, FormGroup, TextField, ThemeProvider, Typography} from "@mui/material";
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import '@fontsource/roboto/300.css';
@@ -22,6 +22,20 @@ export default function AddShelf() {
     const [columnAmountError, setColumnAmountError] = useState<boolean>(false)
 
     const nav = useNavigate();
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#CBE2D8',
+            },
+            secondary: {
+                main: '#ffc2d1',
+            },
+            info:{
+                main: '#646E78'
+            }
+        },
+    });
 
     function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -117,71 +131,80 @@ export default function AddShelf() {
 
     return (
         <>
-            <form onSubmit={submit}>
-                <FormGroup sx={{margin: '5vw'}}>
-                    <Box display={'flex'}
-                         justifyContent={'center'}>
-                        <Typography
-                            fontSize={'xx-large'}>
-                            Regal hinzufügen
-                        </Typography>
-                    </Box>
-                    <br/>
-                    <TextField
-                        type={'text'}
-                        error={shelfNameError}
-                        placeholder={'Name des Regales'}
-                        onChange={event => setShelfName(event.target.value)}
-                    />
-                    <br/>
-                    <TextField
-                        type={'text'}
-                        error={shelfLocationError}
-                        placeholder={'Ort des Regales'}
-                        onChange={event => setShelfLocation(event.target.value)}
-                    />
-                    <br/>
-                    <Box
-                        display={'flex'}
-                        gap={'3vw'}
-                        alignItems={'center'}
-                        justifyContent={"space-between"}>
-                        <TextField
-                            type={'number'}
-                            error={rowAmountError}
-                            placeholder={'Anzahl an Reihen (max. 5)'}
-                            sx={{width: '75vw'}}
-                            onChange={event => setRowAmount(Number(event.target.value))}
-                        />
+            <ThemeProvider theme={theme}>
+                <Box height={'100vh'}
+                     display={'flex'}
+                     flexDirection={'column'}
+                     justifyContent={"center"}
+                     alignItems={'center'}
+                     gap={'5vh'}>
+                    <form onSubmit={submit}>
+                        <FormGroup sx={{margin: '5vw'}}>
+                            <Box display={'flex'}
+                                 justifyContent={'center'}>
+                                <Typography
+                                    fontSize={'xx-large'}>
+                                    Regal hinzufügen
+                                </Typography>
+                            </Box>
+                            <br/>
+                            <TextField
+                                type={'text'}
+                                error={shelfNameError}
+                                placeholder={'Name des Regales'}
+                                onChange={event => setShelfName(event.target.value)}
+                            />
+                            <br/>
+                            <TextField
+                                type={'text'}
+                                error={shelfLocationError}
+                                placeholder={'Ort des Regales'}
+                                onChange={event => setShelfLocation(event.target.value)}
+                            />
+                            <br/>
+                            <Box
+                                display={'flex'}
+                                gap={'3vw'}
+                                alignItems={'center'}
+                                justifyContent={"space-between"}>
+                                <TextField
+                                    type={'number'}
+                                    error={rowAmountError}
+                                    placeholder={'Anzahl an Reihen (max. 5)'}
+                                    sx={{width: '75vw'}}
+                                    onChange={event => setRowAmount(Number(event.target.value))}
+                                />
 
-                        <TableRowsIcon color={'primary'}></TableRowsIcon>
-                    </Box>
-                    <br/>
-                    <Box display={'flex'}
-                         gap={'3vw'}
-                         alignItems={'center'}
-                         justifyContent={"space-between"}>
-                        <TextField
-                            type={'number'}
-                            error={columnAmountError}
-                            placeholder={'Anzahl an Spalten (max. 5)'}
-                            sx={{width: '75vw'}}
-                            onChange={event => setColumnAmount(Number(event.target.value))}
-                        />
-                        <ViewWeekIcon color={'primary'}></ViewWeekIcon>
-                    </Box>
-                    <br/>
-                    <Box
-                        display={'flex'}
-                        justifyContent={'space-between'}>
-                        <Button variant={"contained"}
-                                color={'error'}
-                                onClick={cancel}>Abbrechen</Button>
+                                <TableRowsIcon color={'info'}></TableRowsIcon>
+                            </Box>
+                            <br/>
+                            <Box display={'flex'}
+                                 gap={'3vw'}
+                                 alignItems={'center'}
+                                 justifyContent={"space-between"}>
+                                <TextField
+                                    type={'number'}
+                                    error={columnAmountError}
+                                    placeholder={'Anzahl an Spalten (max. 5)'}
+                                    sx={{width: '75vw'}}
+                                    onChange={event => setColumnAmount(Number(event.target.value))}
+                                />
+                                <ViewWeekIcon color={'info'}></ViewWeekIcon>
+                            </Box>
+                            <br/>
+                            <Box
+                                display={'flex'}
+                                justifyContent={'space-between'}>
+                                <Button variant={"contained"}
+                                        color={'secondary'}
+                                        onClick={cancel}>Abbrechen</Button>
 
-                        <Button variant={"contained"} type={"submit"}>Regal erstellen</Button>
-                    </Box>
-                </FormGroup>
-            </form>
+                                <Button variant={"contained"} type={"submit"}>Regal erstellen</Button>
+                            </Box>
+                        </FormGroup>
+                    </form>
+                </Box>
+            </ThemeProvider>
         </>
     )
 }
