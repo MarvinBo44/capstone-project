@@ -73,7 +73,7 @@ export default function AddItem() {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <form onSubmit={submit}>
+                <form onSubmit={submit} autoComplete={'off'}>
                     <Box height={'100vh'}
                          display={'flex'}
                          flexDirection={'column'}

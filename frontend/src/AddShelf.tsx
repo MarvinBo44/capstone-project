@@ -138,7 +138,7 @@ export default function AddShelf() {
                      justifyContent={"center"}
                      alignItems={'center'}
                      gap={'5vh'}>
-                    <form onSubmit={submit}>
+                    <form onSubmit={submit}  autoComplete={'off'}>
                         <FormGroup sx={{margin: '5vw'}}>
                             <Box display={'flex'}
                                  maxWidth={'800px'}

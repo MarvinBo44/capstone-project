@@ -2,6 +2,7 @@ import {Box, Button, ThemeProvider, createTheme, Typography} from "@mui/material
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
+import SearchBar from "./SearchBar.tsx";
 
 type Shelf = {
     _id: string;
@@ -64,6 +65,8 @@ export default function Home() {
 
             <br/>
             <br/>
+
+            <SearchBar></SearchBar>
 
             {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
