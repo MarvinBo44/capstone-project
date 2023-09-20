@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Grid, Typography} from "@mui/material";
+import {Box, Button, ThemeProvider, createTheme, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -15,6 +15,18 @@ type Compartment = {
     name: string;
     items: [];
 };
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#646E78',
+        },
+        secondary: {
+            main: '#E0C2FF',
+        },
+    },
+});
+
 
 export default function Home() {
     const nav = useNavigate();
@@ -44,17 +56,19 @@ export default function Home() {
 
     return (
         <>
-            <Typography textAlign={"center"} variant={"h4"}>FindMyStuff</Typography>
-            <Typography textAlign={"center"} variant={"h5"}>made for IKEA Kallax</Typography>
+            <Box bgcolor={'#646E78'} padding={'20px'}>
+                <Typography textAlign={"center"} variant={"h3"} color={"white"} paddingTop={'10px'}>find my
+                    stuff</Typography>
+                <Typography textAlign={"center"} variant={"h6"} color={"white"}>made for IKEA Kallax</Typography>
+            </Box>
 
             <br/>
-            <Divider></Divider>
             <br/>
 
             {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
 
-                {
+                { // counts how many Compartments starts with 'A'
                     apiResponseCompartment.map((compartmentItem: Compartment) => {
                         if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                             const compartmentName = compartmentItem.name;
@@ -68,33 +82,37 @@ export default function Home() {
                 }
 
                 return (
-                    <div key={shelfItem._id}>
-                        <Grid container={true} justifyContent={"space-evenly"}>
-                            <Typography bgcolor={"#74b9ff"}
+                    <Box key={shelfItem._id}
+                         margin={'10px'}>
+                        <Box display={'flex'} justifyContent={"space-evenly"}>
+                            <Typography bgcolor={"#CBE2D8"}
                                         width={"fit-content"}
+                                        color={'#545454'}
                                         padding={"10px"}
                                         borderRadius={"10px"}>
                                 {shelfItem.name}
                             </Typography>
                             <Typography
-                                bgcolor={"#81ecec"}
+                                bgcolor={"#E4DCB4"}
                                 width={"fit-content"}
+                                color={'#545454'}
                                 padding={"10px"}
                                 borderRadius={"10px"}
                             >
                                 {shelfItem.location}
                             </Typography>
-                        </Grid>
+                        </Box>
 
                         <br/>
 
-                        <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #1A72C9FF'}>
+                        <Box display={"flex"} flexWrap={"wrap"} border={'2px solid #545454'}>
                             {apiResponseCompartment.map((compartmentItem: Compartment) => {
                                 if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                                     const compartmentName = compartmentItem.name;
 
-                                    return <Box key={compartmentItem._id} flexBasis={100 / counterCompartmentStartsWithA + "%"}>
-                                        <Button sx={{borderRadius: 0, borderColor: '#1A72C9FF'}}
+                                    return <Box key={compartmentItem._id}
+                                                flexBasis={(100 / counterCompartmentStartsWithA) + "%"}>
+                                        <Button sx={{borderRadius: 0, borderColor: '#545454', color: '#545454'}}
                                                 variant={"outlined"}
                                                 fullWidth={true}
                                                 onClick={() => nav('/id/' + compartmentItem._id + '/' + compartmentItem.name + '/' + shelfItem.name + '/' + shelfItem.location)}>
@@ -108,16 +126,23 @@ export default function Home() {
                         </Box>
                         <br/>
                         <br/>
-                    </div>
+                    </Box>
                 );
             })}
-
             <br/>
-            <Box display={"flex"} justifyContent={"center"}>
-                <Button onClick={() => nav("/addShelf")} variant={"contained"}>
-                    Regal hinzufügen
-                </Button>
+            <Box display={"flex"}
+                 justifyContent={"center"}>
+                <ThemeProvider theme={theme}>
+                    <Button onClick={() => nav("/addShelf")}
+                            color={'primary'}
+                            variant={"contained"}>
+                        Regal hinzufügen
+                    </Button>
+                </ThemeProvider>
             </Box>
+            <br/>
+            <br/>
+            <br/>
         </>
     );
 }
