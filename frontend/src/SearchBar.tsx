@@ -2,8 +2,12 @@ import {FormEvent, useEffect, useState} from 'react';
 import {Box, Button, createTheme, Divider, TextField, ThemeProvider, Typography} from "@mui/material";
 import axios from "axios";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import {KeyboardArrowRight} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 export default function SearchBar() {
+
+    const nav = useNavigate()
 
     type SearchResult = {
         compartment: {
@@ -24,15 +28,6 @@ export default function SearchBar() {
         compartmentIds: string[];
     };
 
-    const stringToColor = (str: string, saturation = 40, lightness = 85) => {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            hash = hash & hash;
-        }
-        return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
-    };
-
     const theme = createTheme({
         palette: {
             primary: {
@@ -43,6 +38,15 @@ export default function SearchBar() {
             },
         },
     });
+
+    const stringToColor = (str: string, saturation = 40, lightness = 85) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
+        }
+        return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
+    };
 
     const [searchBarInput, setSearchBarInput] = useState('');
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -113,7 +117,7 @@ export default function SearchBar() {
                              marginBottom={'2vh'}
                              gap={'2%'}
                              textAlign={'center'}>
-                            <Typography bgcolor={"#CBE2D8"}
+                            <Typography bgcolor={"#CBE2D8"} // name of shelf
                                         width={"55%"}
                                         color={'#545454'}
                                         padding={"10px"}
@@ -123,7 +127,7 @@ export default function SearchBar() {
                             </Typography>
 
                             <Typography
-                                bgcolor={"#E4DCB4"}
+                                bgcolor={stringToColor(result.compartment.name)} // compartment name
                                 width={"10%"}
                                 color={'#545454'}
                                 padding={"10px"}
@@ -132,7 +136,7 @@ export default function SearchBar() {
                             </Typography>
 
                             <Typography
-                                bgcolor={"#E4DCB4"}
+                                bgcolor={"#E4DCB4"} // shelf location
                                 width={"30%"}
                                 color={'#545454'}
                                 padding={"10px"}
@@ -144,6 +148,7 @@ export default function SearchBar() {
                         {result.matchingItems.map((item) => (
                             <Box key={item._id}
                                  display={'flex'}
+                                 alignItems={'center'}
                                  marginTop={'2vh'}
                                  marginLeft={'5vw'}
                                  marginRight={'5vw'}
@@ -167,9 +172,14 @@ export default function SearchBar() {
                                      borderRadius={'15px'}>
                                     <Typography>{item.amount}</Typography>
                                 </Box>
+                                <Box display={'flex'} justifyContent={'center'}>
+                                    <Button variant={"outlined"} // GO button
+                                    onClick={undefined}>
+                                        GO <KeyboardArrowRight></KeyboardArrowRight>
+                                    </Button>
+                                </Box>
                             </Box>
                         ))}
-                        <Button variant={"contained"}>efwr</Button>
                         <br/>
                         <Divider></Divider>
                         <br/>

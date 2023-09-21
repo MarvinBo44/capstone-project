@@ -98,7 +98,7 @@ export default function Home() {
                 }
 
                 return (
-                    <Box key={shelfItem._id}
+                    <Box key={shelfItem._id} // shelf name
                          margin={'10px'}>
                         <Box display={'flex'} justifyContent={"space-evenly"}>
                             <Typography bgcolor={"" + stringToColor(shelfItem.name)}
@@ -109,7 +109,7 @@ export default function Home() {
                                 {shelfItem.name}
                             </Typography>
 
-                            <Typography
+                            <Typography // shelf location
                                 bgcolor={"" + stringToColor(shelfItem.location)}
                                 width={"fit-content"}
                                 color={'#545454'}
@@ -126,7 +126,7 @@ export default function Home() {
                                 if (shelfItem.compartmentIds.includes(compartmentItem._id)) {
                                     const compartmentName = compartmentItem.name;
 
-                                    return <Box key={compartmentItem._id}
+                                    return <Box key={compartmentItem._id} // compartments
                                                 flexBasis={(100 / counterCompartmentStartsWithA) + "%"}>
                                         <Button sx={{borderRadius: 0, borderColor: '#545454', color: '#545454'}}
                                                 variant={"outlined"}
@@ -149,7 +149,7 @@ export default function Home() {
             <Box display={"flex"}
                  justifyContent={"center"}>
                 <ThemeProvider theme={theme}>
-                    <Button onClick={() => nav("/addShelf")}
+                    <Button onClick={() => nav("/addShelf")} // add shelf button
                             color={'primary'}
                             variant={"contained"}>
                         Regal hinzufügen
