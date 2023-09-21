@@ -41,7 +41,7 @@ export default function AddItem() {
             setNameError(false);
         }
 
-        if (amount <= 0) {
+        if (amount <= 0 && amount < 9999999) {
             setAmountError(true);
             hasError = true;
         } else {
