@@ -55,6 +55,15 @@ export default function Home() {
             );
     }, []);
 
+    const stringToColor = (str: string, saturation = 40, lightness = 85) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
+        }
+        return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
+    };
+
     return (
         <>
             <Box bgcolor={'#646E78'} padding={'20px'}>
@@ -67,6 +76,9 @@ export default function Home() {
             <br/>
 
             <SearchBar></SearchBar>
+
+            <br/>
+            <br/>
 
             {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
@@ -88,20 +100,20 @@ export default function Home() {
                     <Box key={shelfItem._id}
                          margin={'10px'}>
                         <Box display={'flex'} justifyContent={"space-evenly"}>
-                            <Typography bgcolor={"#CBE2D8"}
+                            <Typography bgcolor={"" + stringToColor(shelfItem.name)}
                                         width={"fit-content"}
                                         color={'#545454'}
                                         padding={"10px"}
                                         borderRadius={"10px"}>
                                 {shelfItem.name}
                             </Typography>
+
                             <Typography
-                                bgcolor={"#E4DCB4"}
+                                bgcolor={"" + stringToColor(shelfItem.location)}
                                 width={"fit-content"}
                                 color={'#545454'}
                                 padding={"10px"}
-                                borderRadius={"10px"}
-                            >
+                                borderRadius={"10px"}>
                                 {shelfItem.location}
                             </Typography>
                         </Box>

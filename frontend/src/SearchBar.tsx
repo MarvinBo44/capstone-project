@@ -1,77 +1,179 @@
-import React, {useState} from 'react';
-import {Box, Button, TextField} from "@mui/material";
+import {FormEvent, useEffect, useState} from 'react';
+import {Box, Button, createTheme, Divider, TextField, ThemeProvider, Typography} from "@mui/material";
+import axios from "axios";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+export default function SearchBar() {
 
-interface SearchResult {
-    compartment: {
+    type SearchResult = {
+        compartment: {
+            _id: string;
+            name: string;
+        };
+        matchingItems: {
+            _id: string;
+            name: string;
+            amount: number;
+        }[];
+    }
+
+    type Shelf = {
         _id: string;
         name: string;
+        location: string;
+        compartmentIds: string[];
     };
-    matchingItems: {
-        _id: string;
-        name: string;
-        amount: number;
-    }[];
-}
 
-const ItemSearch: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-
-    const handleSearch = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/api/findItemByKeyword/${searchTerm}`);
-            const data = await response.json();
-            setSearchResults(data);
-        } catch (error) {
-            console.error('Fehler beim Suchen:', error);
+    const stringToColor = (str: string, saturation = 40, lightness = 85) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            hash = hash & hash;
         }
+        return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
     };
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#646E78',
+            },
+            secondary: {
+                main: '#E0C2FF',
+            },
+        },
+    });
+
+    const [searchBarInput, setSearchBarInput] = useState('');
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+    const [apiResponseShelf, setApiResponseShelf] = useState<Shelf[]>([]);
+
+    function handleSearch(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        axios.get('/api/findItemByKeyword/' + searchBarInput)
+            .then(response => {
+                setSearchResults(response.data);
+            }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    useEffect(() => {
+        axios
+            .get<Shelf[]>("/api/shelf")
+            .then((response) => {
+                setApiResponseShelf(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }, []);
 
     const handleClear = () => {
-        setSearchTerm('');
+        setSearchBarInput('');
         setSearchResults([]);
     };
 
     return (
         <>
-            <Box display={'flex'}
-                 justifyContent={'space-evenly'}
-                 marginBottom={'4vh'}>
-                <TextField
-                    type="text"
-                    size={'small'}
-                    autoComplete={'off'}
-                    placeholder="Suchen"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <Button onClick={handleSearch}
-                        variant={'contained'}
-                        size={'small'}>
-                    Suchen
-                </Button>
-                <Button onClick={handleClear}
-                        size={'small'}
-                        variant={'contained'}>
-                    Clear
-                </Button>
-            </Box>
-            <Box>
+            <ThemeProvider theme={theme}>
+                <form onSubmit={handleSearch}>
+                    <Box display={'flex'}
+                         justifyContent={'space-evenly'}>
+                        <TextField
+                            type="text"
+                            size={'small'}
+                            autoComplete={'off'}
+                            sx={{width: '50%'}}
+                            placeholder="Suchen"
+                            value={searchBarInput}
+                            onChange={(e) => setSearchBarInput(e.target.value)}
+                        />
+                        <Button type={'submit'}
+                                variant={'contained'}
+                                sx={{width: '10%'}}
+                                size={'small'}>
+                            Suchen
+                        </Button>
+                        <Button onClick={handleClear}
+                                size={'small'}
+                                sx={{width: '10%'}}
+                                variant={'contained'}>
+                            <DeleteForeverIcon/>
+                        </Button>
+                    </Box>
+                </form>
                 {searchResults.map((result) => (
-                    <div key={result.compartment._id}>
-                        <h2>Abteilung: {result.compartment.name}</h2>
-                        <ul>
-                            {result.matchingItems.map((item) => (
-                                <li key={item._id}>
-                                    {item.name} - Menge: {item.amount} - Fach: {result.compartment.name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <Box key={result.compartment._id}>
+
+                        <Box display={'flex'} justifyContent={"space-evenly"}
+                             marginTop={'5vh'}
+                             marginLeft={'5vw'}
+                             marginRight={'5vw'}
+                             marginBottom={'2vh'}
+                             gap={'2%'}
+                             textAlign={'center'}>
+                            <Typography bgcolor={"#CBE2D8"}
+                                        width={"55%"}
+                                        color={'#545454'}
+                                        padding={"10px"}
+                                        borderRadius={"10px"}>
+                                {apiResponseShelf.map((shelf) =>
+                                    (shelf.compartmentIds.includes(result.compartment._id) ? shelf.name : null))}
+                            </Typography>
+
+                            <Typography
+                                bgcolor={"#E4DCB4"}
+                                width={"10%"}
+                                color={'#545454'}
+                                padding={"10px"}
+                                borderRadius={"10px"}>
+                                {result.compartment.name}
+                            </Typography>
+
+                            <Typography
+                                bgcolor={"#E4DCB4"}
+                                width={"30%"}
+                                color={'#545454'}
+                                padding={"10px"}
+                                borderRadius={"10px"}>
+                                {apiResponseShelf.map((shelf) => (shelf.compartmentIds.includes(result.compartment._id) ? shelf.location : null))}
+                            </Typography>
+                        </Box>
+
+                        {result.matchingItems.map((item) => (
+                            <Box key={item._id}
+                                 display={'flex'}
+                                 marginTop={'2vh'}
+                                 marginLeft={'5vw'}
+                                 marginRight={'5vw'}
+                                 marginBottom={'2vh'}
+                                 gap={'2%'}>
+
+                                <Box width={'80%'} // name of item
+                                     display={'flex'}
+                                     alignItems={"center"}
+                                     padding={'5px'}
+                                     bgcolor={'' + stringToColor(item.name)}
+                                     borderRadius={'15px'}
+                                     justifyContent={'center'}>
+                                    <Typography variant={"body1"}>{item.name}</Typography>
+                                </Box>
+
+                                <Box width={'20%'} // amount of items
+                                     textAlign={'center'}
+                                     padding={'5px'}
+                                     bgcolor={'' + stringToColor(item._id)}
+                                     borderRadius={'15px'}>
+                                    <Typography>{item.amount}</Typography>
+                                </Box>
+                            </Box>
+                        ))}
+                        <br/>
+                        <Divider></Divider>
+                        <br/>
+                    </Box>
                 ))}
-            </Box>
+            </ThemeProvider>
         </>
     );
-};
-
-export default ItemSearch;
+}
