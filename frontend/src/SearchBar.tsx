@@ -2,6 +2,7 @@ import {FormEvent, useEffect, useState} from 'react';
 import {Box, Button, createTheme, Divider, TextField, ThemeProvider, Typography} from "@mui/material";
 import axios from "axios";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 export default function SearchBar() {
 
     type SearchResult = {
@@ -79,7 +80,7 @@ export default function SearchBar() {
                 <form onSubmit={handleSearch}>
                     <Box display={'flex'}
                          justifyContent={'space-evenly'}>
-                        <TextField
+                        <TextField // Searchbar
                             type="text"
                             size={'small'}
                             autoComplete={'off'}
@@ -88,13 +89,13 @@ export default function SearchBar() {
                             value={searchBarInput}
                             onChange={(e) => setSearchBarInput(e.target.value)}
                         />
-                        <Button type={'submit'}
+                        <Button type={'submit'} // search bar
                                 variant={'contained'}
                                 sx={{width: '10%'}}
                                 size={'small'}>
                             Suchen
                         </Button>
-                        <Button onClick={handleClear}
+                        <Button onClick={handleClear} // clear button
                                 size={'small'}
                                 sx={{width: '10%'}}
                                 variant={'contained'}>
@@ -105,7 +106,7 @@ export default function SearchBar() {
                 {searchResults.map((result) => (
                     <Box key={result.compartment._id}>
 
-                        <Box display={'flex'} justifyContent={"space-evenly"}
+                        <Box display={'flex'} justifyContent={"space-evenly"} // search results
                              marginTop={'5vh'}
                              marginLeft={'5vw'}
                              marginRight={'5vw'}
@@ -168,6 +169,7 @@ export default function SearchBar() {
                                 </Box>
                             </Box>
                         ))}
+                        <Button variant={"contained"}>efwr</Button>
                         <br/>
                         <Divider></Divider>
                         <br/>
