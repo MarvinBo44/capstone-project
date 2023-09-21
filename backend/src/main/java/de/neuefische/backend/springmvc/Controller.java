@@ -13,6 +13,7 @@ import java.util.List;
 public class Controller {
     private Service service;
 
+
     //Shelf CRUD
     @PostMapping("/shelf")
     public Shelf addShelf(@RequestBody Shelf shelf) {
@@ -20,7 +21,7 @@ public class Controller {
     }
 
     @GetMapping("/shelf")
-    public List<Shelf> getAllShelfs() {
+    public List<Shelf> getAllShelf() {
         return service.getShelfRepo().findAll();
     }
 
@@ -61,4 +62,10 @@ public class Controller {
     public int decreaseItemAmountByOne(@PathVariable String compartmentId, @PathVariable String item) {
         return service.decreaseItemAmountByOne(compartmentId, item);
     }
+
+    @GetMapping("/findItemByKeyword/{name}")
+    public List<CompartmentWithMatchingItem> findItemByKeyword(@PathVariable String name) {
+        return service.findItemByKeyword(name);
+    }
+
 }

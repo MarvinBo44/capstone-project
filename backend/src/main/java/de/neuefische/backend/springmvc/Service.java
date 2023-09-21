@@ -2,8 +2,11 @@ package de.neuefische.backend.springmvc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -24,8 +27,14 @@ public class Service {
     }
 
     public List<Item> findItemsInACompartment(String id) {
-        return compartmentRepo.findById(id).get().getItems();
+        Optional<Compartment> compartmentOptional = compartmentRepo.findById(id);
+        if (compartmentOptional.isPresent()) {
+            return compartmentOptional.get().getItems();
+        } else {
+            throw new NoSuchElementException("Compartment with ID " + id + " not found");
+        }
     }
+
 
 
     //Item
@@ -83,4 +92,22 @@ public class Service {
         }
         throw new RuntimeException("Item not found in compartment");
     }
+
+    public List<CompartmentWithMatchingItem> findItemByKeyword(String name) {
+        List<Compartment> compartments = compartmentRepo.findAll();
+
+        Pattern pattern = Pattern.compile(".*" + name + ".*", Pattern.CASE_INSENSITIVE);
+
+        return compartments.stream()
+                .map(compartment -> {
+                    List<Item> matchingItems = compartment.getItems().stream()
+                            .filter(item -> pattern.matcher(item.getName()).matches())
+                            .collect(Collectors.toList());
+
+                    return new CompartmentWithMatchingItem(compartment, matchingItems);
+                })
+                .filter(compartmentWithMatchingItem -> !compartmentWithMatchingItem.getMatchingItems().isEmpty())
+                .collect(Collectors.toList());
+    }
+
 }
