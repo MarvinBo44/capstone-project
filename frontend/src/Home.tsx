@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import SearchBar from "./SearchBar.tsx";
+import logo from './assets/logo.png'
 
 type Shelf = {
     _id: string;
@@ -66,10 +67,10 @@ export default function Home() {
 
     return (
         <>
-            <Box bgcolor={'#646E78'} padding={'20px'}>
-                <Typography textAlign={"center"} variant={"h3"} color={"white"} paddingTop={'10px'}>find my
-                    stuff</Typography>
-                <Typography textAlign={"center"} variant={"h6"} color={"white"}>made for IKEA Kallax</Typography>
+            <Box bgcolor={'#646E78'}>
+                <Box bgcolor={'transparent'} display={'flex'} justifyContent={'center'} p={'20px'}>
+                    <img src={logo} alt={'logo'} width={'80%'}/>
+                </Box>
             </Box>
 
             <br/>
