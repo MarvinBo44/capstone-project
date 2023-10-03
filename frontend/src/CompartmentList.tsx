@@ -3,7 +3,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {Box, Button, createTheme, Typography, ThemeProvider, Grow} from "@mui/material";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from '@mui/icons-material/Edit';
 
 export default function CompartmentList() {
     type Item = {
