@@ -2,12 +2,8 @@ import {FormEvent, useEffect, useState} from 'react';
 import {Box, Button, createTheme, Divider, TextField, ThemeProvider, Typography} from "@mui/material";
 import axios from "axios";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import {KeyboardArrowRight} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
 
 export default function SearchBar() {
-
-    const nav = useNavigate()
 
     type SearchResult = {
         compartment: {
@@ -171,12 +167,6 @@ export default function SearchBar() {
                                      bgcolor={'' + stringToColor(item._id)}
                                      borderRadius={'15px'}>
                                     <Typography>{item.amount}</Typography>
-                                </Box>
-                                <Box display={'flex'} justifyContent={'center'}>
-                                    <Button variant={"outlined"} // GO button
-                                    onClick={undefined}>
-                                        GO <KeyboardArrowRight></KeyboardArrowRight>
-                                    </Button>
                                 </Box>
                             </Box>
                         ))}
