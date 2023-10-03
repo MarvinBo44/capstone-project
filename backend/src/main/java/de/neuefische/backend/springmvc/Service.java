@@ -20,6 +20,18 @@ public class Service {
         return shelfRepo.save(shelf);
     }
 
+    public void deleteShelfAndCompartments(String shelfId) {
+        Optional<Shelf> actualShelf = shelfRepo.findById(shelfId);
+
+        Shelf shelf = actualShelf.get();
+
+        for (String compartmentId : shelf.getCompartmentIds()) {
+            compartmentRepo.deleteById(compartmentId);
+        }
+
+        shelfRepo.delete(shelf);
+    }
+
 
     //Compartment
     public Compartment addCompartment(Compartment compartment) {
@@ -109,5 +121,4 @@ public class Service {
                 .filter(compartmentWithMatchingItem -> !compartmentWithMatchingItem.getMatchingItems().isEmpty())
                 .collect(Collectors.toList());
     }
-
 }

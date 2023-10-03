@@ -4,6 +4,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import SearchBar from "./SearchBar.tsx";
 import logo from './assets/logo.png'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 type Shelf = {
     _id: string;
@@ -34,6 +35,7 @@ export default function Home() {
     const nav = useNavigate();
     const [apiResponseShelf, setApiResponseShelf] = useState<Shelf[]>([]);
     const [apiResponseCompartment, setApiResponseCompartment] = useState<Compartment[]>([]);
+    const [editShelfs, setEditShelfs] = useState<boolean>(false)
 
     useEffect(() => {
         axios
@@ -65,6 +67,19 @@ export default function Home() {
         return `hsl(${(hash % 360)}, ${saturation}%, ${lightness}%)`;
     };
 
+    function deleteShelf(itemId: string) {
+        axios.delete('/api/shelf/' + itemId).then(() =>
+            axios
+                .get<Shelf[]>("/api/shelf")
+                .then((response) => {
+                    setApiResponseShelf(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+        )
+    }
+
     return (
         <>
             <Box bgcolor={'#646E78'}>
@@ -73,13 +88,11 @@ export default function Home() {
                 </Box>
             </Box>
 
-            <br/>
-            <br/>
+            <Box marginTop={'5vh'}
+                 marginBottom={'7vh'}>
+                <SearchBar></SearchBar>
+            </Box>
 
-            <SearchBar></SearchBar>
-
-            <br/>
-            <br/>
 
             {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
@@ -117,6 +130,13 @@ export default function Home() {
                                 borderRadius={"10px"}>
                                 {shelfItem.location}
                             </Typography>
+                            <>
+                                {editShelfs ? // X to delete shelf
+                                    <Button onClick={() => deleteShelf(shelfItem._id)}>
+                                        <HighlightOffIcon color={'error'}/>
+                                    </Button>
+                                    : null}
+                            </>
                         </Box>
 
                         <br/>
@@ -147,18 +167,23 @@ export default function Home() {
             })}
             <br/>
             <Box display={"flex"}
-                 justifyContent={"center"}>
+                 justifyContent={"space-evenly"}
+                 marginBottom={'7vh'}>
                 <ThemeProvider theme={theme}>
                     <Button onClick={() => nav("/addShelf")} // add shelf button
                             color={'primary'}
                             variant={"contained"}>
                         Regal hinzufügen
                     </Button>
+                    <Button onClick={() => {
+                        setEditShelfs(!editShelfs)
+                    }} // edit shelf button
+                            variant={"contained"}
+                            color={'primary'}>
+                        Regale bearbeiten
+                    </Button>
                 </ThemeProvider>
             </Box>
-            <br/>
-            <br/>
-            <br/>
         </>
     );
 }

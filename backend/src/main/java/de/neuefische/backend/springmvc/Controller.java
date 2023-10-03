@@ -3,7 +3,6 @@ package de.neuefische.backend.springmvc;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Data
@@ -23,6 +22,11 @@ public class Controller {
     @GetMapping("/shelf")
     public List<Shelf> getAllShelf() {
         return service.getShelfRepo().findAll();
+    }
+
+    @DeleteMapping("/shelf/{shelfId}")
+    public void deleteShelfAndCompartments(@PathVariable String shelfId) {
+            service.deleteShelfAndCompartments(shelfId);
     }
 
 
