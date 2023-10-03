@@ -62,7 +62,6 @@ export default function CompartmentList() {
                             <Box key={item._id}>
                                 <Box
                                     display={'flex'}
-                                    maxWidth={'800px'}
                                     marginTop={'5vw'}
                                     marginLeft={'5vw'}
                                     marginRight={'5vw'}
