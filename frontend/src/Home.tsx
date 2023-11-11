@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import SearchBar from "./SearchBar.tsx";
-import logo from './assets/logo.png'
+import Navbar from "./Navbar.tsx"
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 type Shelf = {
@@ -82,11 +82,7 @@ export default function Home() {
 
     return (
         <>
-            <Box bgcolor={'#646E78'}>
-                <Box bgcolor={'transparent'} display={'flex'} justifyContent={'center'} p={'20px'}>
-                    <img src={logo} alt={'logo'} width={'80%'}/>
-                </Box>
-            </Box>
+            <Navbar/>
 
             <Box marginTop={'5vh'}
                  marginBottom={'7vh'}>
