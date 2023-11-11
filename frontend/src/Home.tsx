@@ -89,7 +89,6 @@ export default function Home() {
                 <SearchBar></SearchBar>
             </Box>
 
-
             {apiResponseShelf.map((shelfItem: Shelf) => {
                 let counterCompartmentStartsWithA: number = 0;
 
